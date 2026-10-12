@@ -45,7 +45,7 @@
     }
 
     body.dark { background: #080A14; }
-    body.light { background: #f1f5f9; }
+    body.light { background: #ffffff; }
 
     body.dark::before {
       content: '';
@@ -62,8 +62,8 @@
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139,92,246,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(56,189,248,0.06) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139,92,246,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(56,189,248,0.03) 0%, transparent 50%);
       pointer-events: none;
     }
 
@@ -192,21 +192,21 @@
         badge: 'bg-[#8B5CF6]',
         indicator: 'bg-[#8B5CF6]',
       } : {
-        sidebarBg: 'bg-white/95',
-        border: 'border-black/[0.07]',
-        textPrimary: 'text-slate-900',
-        textSecondary: 'text-slate-600',
-        textMuted: 'text-slate-400',
-        hoverBg: 'hover:bg-slate-100',
+        sidebarBg: 'bg-white',
+        border: 'border-gray-200',
+        textPrimary: 'text-gray-900',
+        textSecondary: 'text-gray-600',
+        textMuted: 'text-gray-400',
+        hoverBg: 'hover:bg-gray-50',
         activeBg: 'bg-violet-50',
         activeText: 'text-violet-700',
-        searchBg: 'bg-slate-100',
-        searchHover: 'hover:bg-slate-150',
-        searchBorder: 'border-black/[0.05]',
-        toggleBg: 'bg-white border-black/10 text-slate-500 hover:text-slate-900 hover:bg-slate-50',
+        searchBg: 'bg-gray-50',
+        searchHover: 'hover:bg-gray-100',
+        searchBorder: 'border-gray-200',
+        toggleBg: 'bg-white border-gray-200 text-gray-500 hover:text-gray-900 hover:bg-gray-50',
         proBg: 'bg-gradient-to-r from-[#8B5CF6] to-[#38BDF8] text-white',
-        divider: 'border-black/[0.06]',
-        shadow: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.12)]',
+        divider: 'border-gray-200',
+        shadow: 'shadow-[0_8px_30px_rgba(0,0,0,0.08)]',
         badge: 'bg-[#8B5CF6]',
         indicator: 'bg-[#8B5CF6]',
       };
