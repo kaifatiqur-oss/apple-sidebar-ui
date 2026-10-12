@@ -17,9 +17,19 @@
           fontFamily: {
             sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
           },
+          colors: {
+            auralis: {
+              accent: '#8B5CF6',
+              cyan: '#38BDF8',
+              pink: '#F472B6',
+              bg: '#080A14',
+              elevated: '#161A2C',
+              surface: '#1E2238',
+            }
+          },
           transitionTimingFunction: {
             'apple': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-            'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+            'spring': 'cubic-bezier(0.34, 1.4, 0.44, 1)',
           }
         }
       }
@@ -27,10 +37,7 @@
   </script>
 
   <style>
-    * {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
     body {
       margin: 0;
@@ -43,21 +50,16 @@
       transition: background-color 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
-    body.dark {
-      background: #09090b;
-    }
-
-    body.light {
-      background: #f4f4f5;
-    }
+    body.dark { background: #080A14; }
+    body.light { background: #f1f5f9; }
 
     body.dark::before {
       content: '';
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 90% 70% at 15% 25%, rgba(55,55,70,0.35) 0%, transparent 55%),
-        radial-gradient(ellipse 70% 50% at 85% 75%, rgba(40,40,55,0.25) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139,92,246,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(56,189,248,0.12) 0%, transparent 50%);
       pointer-events: none;
     }
 
@@ -66,79 +68,51 @@
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 90% 70% at 15% 25%, rgba(210,210,230,0.5) 0%, transparent 55%),
-        radial-gradient(ellipse 70% 50% at 85% 75%, rgba(190,190,210,0.35) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139,92,246,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(56,189,248,0.06) 0%, transparent 50%);
       pointer-events: none;
     }
 
     .sidebar {
-      transition: 
-        width 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-        background-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-        border-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-        box-shadow 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: width 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  background-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  border-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  box-shadow 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
       will-change: width;
     }
 
     .fade-slide {
-      transition: 
-        opacity 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
-        transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
-        max-width 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: opacity 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  max-width 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
     .menu-item {
-      transition: 
-        background-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-        color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-        transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
-        box-shadow 0.2s ease;
+      transition: background-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
-    .menu-item:hover {
-      transform: translateX(2px);
-    }
-
-    .menu-item:active {
-      transform: scale(0.97);
-    }
+    .menu-item:hover { transform: translateX(2px); }
+    .menu-item:active { transform: scale(0.97); }
 
     .active-indicator {
-      transition: 
-        height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-        opacity 0.25s ease;
+      transition: height 0.28s cubic-bezier(0.34, 1.4, 0.44, 1), opacity 0.25s ease;
     }
 
     .toggle-btn, .theme-btn {
       transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
-
-    .toggle-btn:hover, .theme-btn:hover {
-      transform: scale(1.1);
-    }
-
-    .toggle-btn:active, .theme-btn:active {
-      transform: scale(0.93);
-    }
+    .toggle-btn:hover, .theme-btn:hover { transform: scale(1.1); }
+    .toggle-btn:active, .theme-btn:active { transform: scale(0.93); }
 
     .badge {
-      transition: 
-        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-        opacity 0.3s ease;
-    }
-
-    .logo-box {
-      transition: background 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.44, 1), opacity 0.3s ease;
     }
 
     .search-box {
-      transition: 
-        background-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
-        border-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-    }
-
-    .search-box:hover {
-      transform: translateY(-1px);
+      transition: background-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  border-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
   </style>
 </head>
@@ -151,6 +125,20 @@
     const Icon = ({ children, size = 20 }) => (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         {children}
+      </svg>
+    );
+
+    const AuralisLogo = () => (
+      <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+        <defs>
+          <linearGradient id="aur" x1="0" y1="0" x2="48" y2="48">
+            <stop offset="0" stopColor="#8B5CF6"/>
+            <stop offset="0.55" stopColor="#38BDF8"/>
+            <stop offset="1" stopColor="#F472B6"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="44" height="44" rx="14" fill="url(#aur)" opacity="0.92"/>
+        <path d="M24 11 33.5 36h-4.6l-2-5.6H21l-2 5.6h-4.5L24 11Zm0 10.4-1.7 4.8h3.5L24 21.4Z" fill="white"/>
       </svg>
     );
 
@@ -191,45 +179,41 @@
       ];
 
       const theme = darkMode ? {
-        sidebarBg: 'bg-[#141416]/92',
+        sidebarBg: 'bg-[#161A2C]/92',
         border: 'border-white/[0.08]',
-        textPrimary: 'text-white',
-        textSecondary: 'text-zinc-400',
-        textMuted: 'text-zinc-500',
-        hoverBg: 'hover:bg-white/[0.07]',
-        activeBg: 'bg-white/[0.11]',
+        textPrimary: 'text-[#F5F7FF]',
+        textSecondary: 'text-[#A8AFC8]',
+        textMuted: 'text-[#767D98]',
+        hoverBg: 'hover:bg-white/[0.06]',
+        activeBg: 'bg-white/[0.1]',
         activeText: 'text-white',
         searchBg: 'bg-white/[0.05]',
         searchHover: 'hover:bg-white/[0.08]',
         searchBorder: 'border-white/[0.06]',
-        logoBg: 'bg-gradient-to-br from-zinc-600 to-zinc-800',
-        logoBorder: 'border-white/10',
-        toggleBg: 'bg-[#1c1c1e] border-white/10 text-zinc-400 hover:text-white hover:bg-[#2c2c2e]',
-        proBg: 'bg-white text-black',
+        toggleBg: 'bg-[#1E2238] border-white/10 text-[#A8AFC8] hover:text-white hover:bg-[#2a2f4a]',
+        proBg: 'bg-gradient-to-r from-[#8B5CF6] to-[#38BDF8] text-white',
         divider: 'border-white/[0.06]',
-        shadow: 'shadow-[0_25px_60px_-12px_rgba(0,0,0,0.65)]',
-        badge: 'bg-[#0a84ff]',
-        indicator: 'bg-[#0a84ff]',
+        shadow: 'shadow-[0_25px_60px_-12px_rgba(0,0,0,0.6)]',
+        badge: 'bg-[#8B5CF6]',
+        indicator: 'bg-[#8B5CF6]',
       } : {
         sidebarBg: 'bg-white/95',
-        border: 'border-black/[0.08]',
-        textPrimary: 'text-zinc-900',
-        textSecondary: 'text-zinc-600',
-        textMuted: 'text-zinc-400',
-        hoverBg: 'hover:bg-zinc-100',
-        activeBg: 'bg-zinc-100',
-        activeText: 'text-zinc-900',
-        searchBg: 'bg-zinc-100',
-        searchHover: 'hover:bg-zinc-150',
-        searchBorder: 'border-black/[0.06]',
-        logoBg: 'bg-gradient-to-br from-zinc-200 to-zinc-300',
-        logoBorder: 'border-black/10',
-        toggleBg: 'bg-white border-black/10 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50',
-        proBg: 'bg-zinc-900 text-white',
+        border: 'border-black/[0.07]',
+        textPrimary: 'text-slate-900',
+        textSecondary: 'text-slate-600',
+        textMuted: 'text-slate-400',
+        hoverBg: 'hover:bg-slate-100',
+        activeBg: 'bg-violet-50',
+        activeText: 'text-violet-700',
+        searchBg: 'bg-slate-100',
+        searchHover: 'hover:bg-slate-150',
+        searchBorder: 'border-black/[0.05]',
+        toggleBg: 'bg-white border-black/10 text-slate-500 hover:text-slate-900 hover:bg-slate-50',
+        proBg: 'bg-gradient-to-r from-[#8B5CF6] to-[#38BDF8] text-white',
         divider: 'border-black/[0.06]',
-        shadow: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)]',
-        badge: 'bg-[#0a84ff]',
-        indicator: 'bg-[#0a84ff]',
+        shadow: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.12)]',
+        badge: 'bg-[#8B5CF6]',
+        indicator: 'bg-[#8B5CF6]',
       };
 
       return (
@@ -246,14 +230,10 @@
             `}
           >
             <div className="flex items-center gap-3 px-4 pt-5 pb-3">
-              <div className={`logo-box w-9 h-9 min-w-[36px] rounded-[12px] ${theme.logoBg} flex items-center justify-center ${theme.textPrimary} shadow-inner border ${theme.logoBorder}`}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M9 18V5l12-2v13"/>
-                  <circle cx="6" cy="18" r="3"/>
-                  <circle cx="18" cy="16" r="3"/>
-                </svg>
+              <div className="w-9 h-9 min-w-[36px] flex items-center justify-center">
+                <AuralisLogo />
               </div>
-              <span className={`text-[15px] font-semibold ${theme.textPrimary} tracking-tight fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 translate-x-0 max-w-[140px]' : 'opacity-0 -translate-x-3 max-w-0'}`}>
+              <span className={`text-[15px] font-semibold ${theme.textPrimary} tracking-tight fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 translate-x-0 max-w-[150px]' : 'opacity-0 -translate-x-3 max-w-0'}`}>
                 Auralis Studios
               </span>
 
