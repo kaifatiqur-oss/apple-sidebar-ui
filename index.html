@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sidebar — Apple Design</title>
+  <title>Sidebar UI</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
@@ -20,6 +20,7 @@
           transitionTimingFunction: {
             'apple': 'cubic-bezier(0.25, 0.1, 0.25, 1)',
             'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+            'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
           }
         }
       }
@@ -27,15 +28,20 @@
   </script>
 
   <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      background: #0c0c0c;
+      background: #0a0a0a;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
     }
 
     body::before {
@@ -43,18 +49,60 @@
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 90% 60% at 15% 30%, rgba(50,50,55,0.45) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 50% at 85% 70%, rgba(35,35,40,0.4) 0%, transparent 55%);
+        radial-gradient(ellipse 100% 80% at 10% 20%, rgba(60,60,70,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 90% 80%, rgba(40,40,50,0.3) 0%, transparent 50%);
       pointer-events: none;
     }
 
     .sidebar {
-      transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: width 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+      will-change: width;
     }
 
     .fade-slide {
-      transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: opacity 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  max-width 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .menu-item {
+      transition: background-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                  transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .menu-item:active {
+      transform: scale(0.97);
+    }
+
+    .active-indicator {
+      transition: height 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.25s ease;
+    }
+
+    .toggle-btn {
+      transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .toggle-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .toggle-btn:active {
+      transform: scale(0.95);
+    }
+
+    .badge {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  opacity 0.3s ease;
+    }
+
+    .pro-btn {
+      transition: background-color 0.25s ease, transform 0.2s ease;
+    }
+
+    .pro-btn:hover {
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -62,7 +110,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     const Icon = ({ children, size = 20 }) => (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -78,7 +126,7 @@
       list: <Icon><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></Icon>,
       monitor: <Icon><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></Icon>,
       plus: <Icon><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Icon>,
-      search: <Icon size={16}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></Icon>,
+      search: <Icon size={16}><circle cx="11" cy="11" r={8}/><line x1="21" y1="21" x2="16.65" y2="16.65"/></Icon>,
       cloud: <Icon size={16}><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></Icon>,
       chevron: <Icon size={14}><polyline points="15 18 9 12 15 6"/></Icon>,
     };
@@ -86,6 +134,11 @@
     function Sidebar() {
       const [expanded, setExpanded] = useState(true);
       const [active, setActive] = useState('home');
+      const [mounted, setMounted] = useState(false);
+
+      useEffect(() => {
+        setMounted(true);
+      }, []);
 
       const items = [
         { id: 'home', label: 'Home', icon: icons.home },
@@ -98,31 +151,33 @@
       ];
 
       return (
-        <div className="relative">
-          <div className={`sidebar bg-[#161616]/90 backdrop-blur-xl border border-white/[0.06] rounded-[26px] shadow-2xl flex flex-col overflow-hidden ${expanded ? 'w-[272px]' : 'w-[70px]'}`}>
-            
-            {/* Traffic lights */}
-            <div className="flex gap-2 px-5 pt-4 pb-1">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#febc2e]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#28c840]"></div>
-            </div>
-
+        <div className={`relative transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+          <div 
+            className={`
+              sidebar 
+              bg-[#141414]/85 backdrop-blur-2xl 
+              border border-white/[0.07] 
+              rounded-[28px] 
+              shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] 
+              flex flex-col overflow-hidden
+              ${expanded ? 'w-[280px]' : 'w-[72px]'}
+            `}
+          >
             {/* Logo */}
-            <div className="flex items-center gap-3 px-4 py-4">
-              <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-neutral-700 to-neutral-800 flex items-center justify-center text-white shadow-inner">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <div className="flex items-center gap-3 px-4 pt-5 pb-3">
+              <div className="w-9 h-9 min-w-[36px] rounded-[12px] bg-gradient-to-br from-neutral-600 to-neutral-800 flex items-center justify-center text-white shadow-inner border border-white/5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
               </div>
-              <span className={`text-[15px] font-semibold text-white tracking-tight fade-slide ${expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 absolute'}`}>
+              <span className={`text-[15px] font-semibold text-white tracking-tight fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 translate-x-0 max-w-[160px]' : 'opacity-0 -translate-x-3 max-w-0'}`}>
                 Sidebar UI
               </span>
             </div>
 
             {/* Search */}
-            <div className={`mx-3 mb-4 flex items-center gap-2 bg-white/[0.04] rounded-[12px] border border-white/[0.04] ${expanded ? 'px-3 py-2' : 'justify-center p-2.5'}`}>
-              <span className="text-neutral-500">{icons.search}</span>
+            <div className={`mx-3 mb-4 flex items-center gap-2.5 bg-white/[0.04] hover:bg-white/[0.06] rounded-[14px] border border-white/[0.04] transition-colors duration-200 ${expanded ? 'px-3.5 py-2.5' : 'justify-center p-2.5'}`}>
+              <span className="text-neutral-500 flex-shrink-0">{icons.search}</span>
               <input
                 placeholder="Search"
                 className={`bg-transparent text-[13px] text-neutral-300 placeholder:text-neutral-600 outline-none w-full fade-slide ${expanded ? 'opacity-100' : 'opacity-0 w-0'}`}
@@ -130,12 +185,12 @@
             </div>
 
             {/* Section label */}
-            <div className={`px-5 mb-1.5 text-[11px] font-medium text-neutral-600 tracking-wide fade-slide ${expanded ? 'opacity-100' : 'opacity-0 h-0'}`}>
+            <div className={`px-5 mb-1.5 text-[11px] font-medium text-neutral-600 tracking-wider uppercase fade-slide overflow-hidden ${expanded ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
               Menu
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 px-2.5 space-y-0.5">
+            <nav className="flex-1 px-2.5 space-y-0.5 pb-2">
               {items.map((item) => {
                 const isActive = active === item.id;
                 return (
@@ -143,22 +198,26 @@
                     key={item.id}
                     onClick={() => setActive(item.id)}
                     className={`
-                      relative w-full flex items-center gap-3 px-3 py-[9px] rounded-[12px] text-left
-                      transition-all duration-200 ease-apple
+                      menu-item relative w-full flex items-center gap-3 px-3 py-[10px] rounded-[14px] text-left
                       ${isActive 
-                        ? 'bg-white/[0.08] text-white' 
-                        : 'text-neutral-400 hover:bg-white/[0.04] hover:text-neutral-200'}
+                        ? 'bg-white/[0.09] text-white' 
+                        : 'text-neutral-400 hover:bg-white/[0.045] hover:text-neutral-200'}
                     `}
                   >
-                    {isActive && (
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[18px] bg-[#0a84ff] rounded-r-full"></div>
-                    )}
-                    <span className={isActive ? 'text-white' : ''}>{item.icon}</span>
-                    <span className={`text-[13.5px] font-medium fade-slide ${expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'}`}>
+                    <div 
+                      className={`active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full bg-[#0a84ff] ${isActive ? 'h-[18px] opacity-100' : 'h-0 opacity-0'}`}
+                    />
+                    
+                    <span className={`flex-shrink-0 ${isActive ? 'text-white' : ''}`}>
+                      {item.icon}
+                    </span>
+                    
+                    <span className={`text-[13.5px] font-medium fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 translate-x-0 max-w-[140px]' : 'opacity-0 -translate-x-2 max-w-0'}`}>
                       {item.label}
                     </span>
-                    {item.badge && expanded && (
-                      <span className="ml-auto text-[11px] font-semibold bg-[#0a84ff] text-white px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+
+                    {item.badge && (
+                      <span className={`ml-auto text-[11px] font-semibold bg-[#0a84ff] text-white px-1.5 py-0.5 rounded-full min-w-[20px] text-center badge ${expanded ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                         {item.badge}
                       </span>
                     )}
@@ -168,19 +227,19 @@
             </nav>
 
             {/* Bottom */}
-            <div className="mt-2 px-3 pb-4 pt-3 border-t border-white/[0.05]">
-              <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-[12px] hover:bg-white/[0.04] transition-colors">
-                <div className="w-6 h-6 rounded-full bg-white text-black text-[10px] font-bold flex items-center justify-center">
+            <div className="mt-1 px-3 pb-5 pt-3 border-t border-white/[0.05]">
+              <button className="pro-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[14px] hover:bg-white/[0.05]">
+                <div className="w-6 h-6 min-w-[24px] rounded-full bg-white text-black text-[10px] font-bold flex items-center justify-center shadow-sm">
                   Pro
                 </div>
-                <span className={`text-[13px] text-neutral-300 font-medium fade-slide ${expanded ? 'opacity-100' : 'opacity-0'}`}>
+                <span className={`text-[13px] text-neutral-300 font-medium fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 max-w-[140px]' : 'opacity-0 max-w-0'}`}>
                   Upgrade to Pro
                 </span>
               </button>
 
-              <div className="flex items-center gap-2.5 px-3 mt-2 text-neutral-500">
-                {icons.cloud}
-                <span className={`text-[12px] fade-slide ${expanded ? 'opacity-100' : 'opacity-0'}`}>
+              <div className="flex items-center gap-2.5 px-3 mt-2.5 text-neutral-500">
+                <span className="flex-shrink-0">{icons.cloud}</span>
+                <span className={`text-[12px] fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 max-w-[160px]' : 'opacity-0 max-w-0'}`}>
                   Download Torrents Faster
                 </span>
               </div>
@@ -190,9 +249,9 @@
           {/* Toggle */}
           <button
             onClick={() => setExpanded(!expanded)}
-            className="absolute top-[18px] -right-[13px] w-6 h-6 rounded-full bg-[#1c1c1c] border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:bg-[#252525] transition-all duration-200 shadow-lg"
+            className="toggle-btn absolute top-[22px] -right-[14px] w-7 h-7 rounded-full bg-[#1c1c1c] border border-white/10 flex items-center justify-center text-neutral-400 hover:text-white hover:bg-[#252525] shadow-lg z-20"
           >
-            <span className={`transition-transform duration-300 ease-apple ${expanded ? '' : 'rotate-180'}`}>
+            <span className={`transition-transform duration-400 ease-apple ${expanded ? '' : 'rotate-180'}`}>
               {icons.chevron}
             </span>
           </button>
