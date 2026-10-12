@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Music Sidebar UI</title>
+  <title>Auralis Studios</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
@@ -44,11 +44,11 @@
     }
 
     body.dark {
-      background: #0a0a0a;
+      background: #09090b;
     }
 
     body.light {
-      background: #f2f2f7;
+      background: #f4f4f5;
     }
 
     body.dark::before {
@@ -56,8 +56,8 @@
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 100% 80% at 10% 20%, rgba(60,60,70,0.3) 0%, transparent 55%),
-        radial-gradient(ellipse 80% 60% at 90% 80%, rgba(40,40,50,0.25) 0%, transparent 50%);
+        radial-gradient(ellipse 90% 70% at 15% 25%, rgba(55,55,70,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 85% 75%, rgba(40,40,55,0.25) 0%, transparent 50%);
       pointer-events: none;
     }
 
@@ -66,29 +66,37 @@
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(ellipse 100% 80% at 10% 20%, rgba(200,200,220,0.4) 0%, transparent 55%),
-        radial-gradient(ellipse 80% 60% at 90% 80%, rgba(180,180,200,0.3) 0%, transparent 50%);
+        radial-gradient(ellipse 90% 70% at 15% 25%, rgba(210,210,230,0.5) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 85% 75%, rgba(190,190,210,0.35) 0%, transparent 50%);
       pointer-events: none;
     }
 
     .sidebar {
-      transition: width 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  background-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  border-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  box-shadow 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: 
+        width 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
+        background-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
+        border-color 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
+        box-shadow 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
       will-change: width;
     }
 
     .fade-slide {
-      transition: opacity 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  max-width 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: 
+        opacity 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+        transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+        max-width 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
     .menu-item {
-      transition: background-color 0.22s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  color 0.22s cubic-bezier(0.25, 0.1, 0.25, 1),
-                  transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+      transition: 
+        background-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+        color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+        transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+        box-shadow 0.2s ease;
+    }
+
+    .menu-item:hover {
+      transform: translateX(2px);
     }
 
     .menu-item:active {
@@ -96,8 +104,9 @@
     }
 
     .active-indicator {
-      transition: height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  opacity 0.25s ease;
+      transition: 
+        height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.25s ease;
     }
 
     .toggle-btn, .theme-btn {
@@ -105,16 +114,31 @@
     }
 
     .toggle-btn:hover, .theme-btn:hover {
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
 
     .toggle-btn:active, .theme-btn:active {
-      transform: scale(0.94);
+      transform: scale(0.93);
     }
 
     .badge {
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  opacity 0.3s ease;
+      transition: 
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.3s ease;
+    }
+
+    .logo-box {
+      transition: background 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .search-box {
+      transition: 
+        background-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+        border-color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .search-box:hover {
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -166,62 +190,91 @@
         { id: 'radio', label: 'Radio', icon: icons.radio },
       ];
 
-      const isDark = darkMode;
-      const sidebarBg = isDark ? 'bg-[#141414]/90' : 'bg-white/90';
-      const borderColor = isDark ? 'border-white/[0.08]' : 'border-black/[0.08]';
-      const textPrimary = isDark ? 'text-white' : 'text-gray-900';
-      const textSecondary = isDark ? 'text-neutral-400' : 'text-gray-500';
-      const textMuted = isDark ? 'text-neutral-600' : 'text-gray-400';
-      const hoverBg = isDark ? 'hover:bg-white/[0.05]' : 'hover:bg-black/[0.04]';
-      const activeBg = isDark ? 'bg-white/[0.1]' : 'bg-black/[0.07]';
-      const searchBg = isDark ? 'bg-white/[0.05] hover:bg-white/[0.07]' : 'bg-black/[0.04] hover:bg-black/[0.06]';
-      const logoBg = isDark ? 'from-neutral-600 to-neutral-800' : 'from-gray-200 to-gray-300';
-      const toggleBg = isDark ? 'bg-[#1c1c1c] border-white/10 text-neutral-400 hover:text-white hover:bg-[#252525]' : 'bg-white border-black/10 text-gray-500 hover:text-gray-900 hover:bg-gray-50';
-      const proBg = isDark ? 'bg-white text-black' : 'bg-gray-900 text-white';
+      const theme = darkMode ? {
+        sidebarBg: 'bg-[#141416]/92',
+        border: 'border-white/[0.08]',
+        textPrimary: 'text-white',
+        textSecondary: 'text-zinc-400',
+        textMuted: 'text-zinc-500',
+        hoverBg: 'hover:bg-white/[0.07]',
+        activeBg: 'bg-white/[0.11]',
+        activeText: 'text-white',
+        searchBg: 'bg-white/[0.05]',
+        searchHover: 'hover:bg-white/[0.08]',
+        searchBorder: 'border-white/[0.06]',
+        logoBg: 'bg-gradient-to-br from-zinc-600 to-zinc-800',
+        logoBorder: 'border-white/10',
+        toggleBg: 'bg-[#1c1c1e] border-white/10 text-zinc-400 hover:text-white hover:bg-[#2c2c2e]',
+        proBg: 'bg-white text-black',
+        divider: 'border-white/[0.06]',
+        shadow: 'shadow-[0_25px_60px_-12px_rgba(0,0,0,0.65)]',
+        badge: 'bg-[#0a84ff]',
+        indicator: 'bg-[#0a84ff]',
+      } : {
+        sidebarBg: 'bg-white/95',
+        border: 'border-black/[0.08]',
+        textPrimary: 'text-zinc-900',
+        textSecondary: 'text-zinc-600',
+        textMuted: 'text-zinc-400',
+        hoverBg: 'hover:bg-zinc-100',
+        activeBg: 'bg-zinc-100',
+        activeText: 'text-zinc-900',
+        searchBg: 'bg-zinc-100',
+        searchHover: 'hover:bg-zinc-150',
+        searchBorder: 'border-black/[0.06]',
+        logoBg: 'bg-gradient-to-br from-zinc-200 to-zinc-300',
+        logoBorder: 'border-black/10',
+        toggleBg: 'bg-white border-black/10 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50',
+        proBg: 'bg-zinc-900 text-white',
+        divider: 'border-black/[0.06]',
+        shadow: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)]',
+        badge: 'bg-[#0a84ff]',
+        indicator: 'bg-[#0a84ff]',
+      };
 
       return (
         <div className={`relative transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
           <div 
             className={`
               sidebar 
-              ${sidebarBg} backdrop-blur-2xl 
-              border ${borderColor}
+              ${theme.sidebarBg} backdrop-blur-2xl 
+              border ${theme.border}
               rounded-[28px] 
-              shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] 
+              ${theme.shadow}
               flex flex-col overflow-hidden
               ${expanded ? 'w-[280px]' : 'w-[72px]'}
             `}
           >
             <div className="flex items-center gap-3 px-4 pt-5 pb-3">
-              <div className={`w-9 h-9 min-w-[36px] rounded-[12px] bg-gradient-to-br ${logoBg} flex items-center justify-center ${textPrimary} shadow-inner border ${isDark ? 'border-white/5' : 'border-black/5'}`}>
+              <div className={`logo-box w-9 h-9 min-w-[36px] rounded-[12px] ${theme.logoBg} flex items-center justify-center ${theme.textPrimary} shadow-inner border ${theme.logoBorder}`}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M9 18V5l12-2v13"/>
                   <circle cx="6" cy="18" r="3"/>
                   <circle cx="18" cy="16" r="3"/>
                 </svg>
               </div>
-              <span className={`text-[15px] font-semibold ${textPrimary} tracking-tight fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 translate-x-0 max-w-[120px]' : 'opacity-0 -translate-x-3 max-w-0'}`}>
-                Pulse Music
+              <span className={`text-[15px] font-semibold ${theme.textPrimary} tracking-tight fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 translate-x-0 max-w-[140px]' : 'opacity-0 -translate-x-3 max-w-0'}`}>
+                Auralis Studios
               </span>
 
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className={`theme-btn ml-auto w-7 h-7 rounded-full flex items-center justify-center ${toggleBg} border ${expanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                title={darkMode ? 'Switch to Light' : 'Switch to Dark'}
+                className={`theme-btn ml-auto w-7 h-7 rounded-full flex items-center justify-center border ${theme.toggleBg} ${expanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                title={darkMode ? 'Light mode' : 'Dark mode'}
               >
                 {darkMode ? icons.sun : icons.moon}
               </button>
             </div>
 
-            <div className={`mx-3 mb-4 flex items-center gap-2.5 ${searchBg} rounded-[14px] border ${borderColor} transition-colors duration-200 ${expanded ? 'px-3.5 py-2.5' : 'justify-center p-2.5'}`}>
-              <span className={`${textMuted} flex-shrink-0`}>{icons.search}</span>
+            <div className={`search-box mx-3 mb-4 flex items-center gap-2.5 ${theme.searchBg} ${theme.searchHover} rounded-[14px] border ${theme.searchBorder} ${expanded ? 'px-3.5 py-2.5' : 'justify-center p-2.5'}`}>
+              <span className={`${theme.textMuted} flex-shrink-0`}>{icons.search}</span>
               <input
-                placeholder="Search"
-                className={`bg-transparent text-[13px] ${textPrimary} outline-none w-full fade-slide ${expanded ? 'opacity-100' : 'opacity-0 w-0'}`}
+                placeholder="Search music..."
+                className={`bg-transparent text-[13px] ${theme.textPrimary} outline-none w-full fade-slide placeholder:text-zinc-500 ${expanded ? 'opacity-100' : 'opacity-0 w-0'}`}
               />
             </div>
 
-            <div className={`px-5 mb-1.5 text-[11px] font-medium ${textMuted} tracking-wider uppercase fade-slide overflow-hidden ${expanded ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
+            <div className={`px-5 mb-1.5 text-[11px] font-medium ${theme.textMuted} tracking-wider uppercase fade-slide overflow-hidden ${expanded ? 'opacity-100 h-auto' : 'opacity-0 h-0'}`}>
               Menu
             </div>
 
@@ -235,15 +288,15 @@
                     className={`
                       menu-item relative w-full flex items-center gap-3 px-3 py-[10px] rounded-[14px] text-left
                       ${isActive 
-                        ? `${activeBg} ${textPrimary}` 
-                        : `${textSecondary} ${hoverBg}`}
+                        ? `${theme.activeBg} ${theme.activeText}` 
+                        : `${theme.textSecondary} ${theme.hoverBg}`}
                     `}
                   >
                     <div 
-                      className={`active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full bg-[#0a84ff] ${isActive ? 'h-[18px] opacity-100' : 'h-0 opacity-0'}`}
+                      className={`active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-r-full ${theme.indicator} ${isActive ? 'h-[18px] opacity-100' : 'h-0 opacity-0'}`}
                     />
                     
-                    <span className={`flex-shrink-0 ${isActive ? textPrimary : ''}`}>
+                    <span className={`flex-shrink-0 ${isActive ? theme.activeText : ''}`}>
                       {item.icon}
                     </span>
                     
@@ -252,7 +305,7 @@
                     </span>
 
                     {item.badge && (
-                      <span className={`ml-auto text-[11px] font-semibold bg-[#0a84ff] text-white px-1.5 py-0.5 rounded-full min-w-[20px] text-center badge ${expanded ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+                      <span className={`ml-auto text-[11px] font-semibold ${theme.badge} text-white px-1.5 py-0.5 rounded-full min-w-[20px] text-center badge ${expanded ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                         {item.badge}
                       </span>
                     )}
@@ -261,12 +314,12 @@
               })}
             </nav>
 
-            <div className={`mt-1 px-3 pb-5 pt-3 border-t ${borderColor}`}>
-              <button className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[14px] ${hoverBg} transition-colors`}>
-                <div className={`w-6 h-6 min-w-[24px] rounded-full ${proBg} text-[10px] font-bold flex items-center justify-center shadow-sm`}>
+            <div className={`mt-1 px-3 pb-5 pt-3 border-t ${theme.divider}`}>
+              <button className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[14px] ${theme.hoverBg} transition-colors duration-200`}>
+                <div className={`w-6 h-6 min-w-[24px] rounded-full ${theme.proBg} text-[10px] font-bold flex items-center justify-center shadow-sm`}>
                   Pro
                 </div>
-                <span className={`text-[13px] ${textSecondary} font-medium fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 max-w-[140px]' : 'opacity-0 max-w-0'}`}>
+                <span className={`text-[13px] ${theme.textSecondary} font-medium fade-slide whitespace-nowrap overflow-hidden ${expanded ? 'opacity-100 max-w-[140px]' : 'opacity-0 max-w-0'}`}>
                   Upgrade to Pro
                 </span>
               </button>
@@ -275,7 +328,7 @@
 
           <button
             onClick={() => setExpanded(!expanded)}
-            className={`toggle-btn absolute top-[22px] -right-[14px] w-7 h-7 rounded-full border flex items-center justify-center shadow-lg z-20 ${toggleBg}`}
+            className={`toggle-btn absolute top-[22px] -right-[14px] w-7 h-7 rounded-full border flex items-center justify-center shadow-lg z-20 ${theme.toggleBg}`}
           >
             <span className={`transition-transform duration-400 ease-apple ${expanded ? '' : 'rotate-180'}`}>
               {icons.chevron}
@@ -285,8 +338,8 @@
           {!expanded && (
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className={`theme-btn absolute top-[58px] -right-[14px] w-7 h-7 rounded-full border flex items-center justify-center shadow-lg z-20 ${toggleBg}`}
-              title={darkMode ? 'Switch to Light' : 'Switch to Dark'}
+              className={`theme-btn absolute top-[58px] -right-[14px] w-7 h-7 rounded-full border flex items-center justify-center shadow-lg z-20 ${theme.toggleBg}`}
+              title={darkMode ? 'Light mode' : 'Dark mode'}
             >
               {darkMode ? icons.sun : icons.moon}
             </button>
